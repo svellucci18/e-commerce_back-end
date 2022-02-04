@@ -1,4 +1,5 @@
 require('dotenv').config();
+// const util = require('util');
 
 const Sequelize = require('sequelize');
 
@@ -11,5 +12,9 @@ const sequelize = process.env.JAWSDB_URL
         decimalNumbers: true,
       },
     });
+
+// // allows for async await
+// sequelize.query = util.promisify( sequelize.query );
+
 
 module.exports = sequelize;
