@@ -31,8 +31,12 @@ Product.init(
     },
     category_id: {
       type: DataTypes.INTEGER,
-      // TODO: reference the category model's id
-
+      // reference the category model's id
+      references: {
+        // This references the `category` model, which we set in `Category.js` as its `modelName` property
+        model: 'category',
+        key: 'id',
+      },
     }
   },
   {

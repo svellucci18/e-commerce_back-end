@@ -9,13 +9,21 @@ ProductTag.init(
     // define columns
     product_id: {
       type: DataTypes.INTEGER,
-      // TODO: reference the product model's id
-
+      // reference the product model's id
+      references: {
+        // This references the `product` model, which we set in `Product.js` as its `modelName` property
+        model: 'product',
+        key: 'id',
+      }
     },
     tag_id: {
       type: DataTypes.INTEGER,
-      // TODO: reference the tag model's id
-
+      // reference the tag model's id
+      references: {
+        // This references the `tag` model, which we set in `Tag.js` as its `modelName` property
+        model: 'tag',
+        key: 'id',
+      },
     }
   },
   {

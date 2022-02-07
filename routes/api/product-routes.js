@@ -4,19 +4,24 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // get all products
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all products
-  // be sure to include its associated Category and Tag data
+  const products = await Product.findAll({
+    // Configure the 'findAll'
+    // TODO: be sure to include its associated Category and Tag data
+    include: [{ model: Category, Tag }]
+  });
 
-  res.json({ success: true, hit: "Get Products"}) // from demo, this will eventually be product.findAll
+  res.json( products )
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
- 
-  res.json({ success: true, hit: "Get Product 1"}) // another tester
+  // TODO: be sure to include its associated Category and Tag data
+  const product = await Product.findByPk( req.params.id );
+
+  res.json( product )
 });
 
 // create new product
@@ -29,7 +34,11 @@ router.post('/', (req, res) => {
       "tagIds": [1, 2, 3, 4]
     }
   */
+
+  // Create a new prduct based on the data provided in req.body
   Product.create(req.body)
+
+    // Get our newly created product for this manyToMany relationship
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
