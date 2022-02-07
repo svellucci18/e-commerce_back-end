@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
   const products = await Product.findAll({
     // Configure the 'findAll'
     // be sure to include its associated Category and Tag data
-    include: [{ model: Category, Tag }]
+    include: [{ model: Category, Tag, ProductTag }]
   });
 
   res.json( products )
@@ -18,8 +18,10 @@ router.get('/', async (req, res) => {
 // get one product
 router.get('/:id', async (req, res) => {
   // find a single product by its `id`
-  // TODO: be sure to include its associated Category and Tag data
-  const product = await Product.findByPk( req.params.id );
+  // be sure to include its associated Category and Tag data
+  const product = await Product.findByPk( req.params.id, {
+    include: [{ model: Category, Tag }]
+  });
 
   res.json( product )
 });
@@ -102,10 +104,15 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+  const productData = await Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  });
 
-  res.json({ success: true, hit: "Delete Product"}) // another tester
+  res.json(productData)
 });
 
 module.exports = router;
